@@ -1,0 +1,8 @@
+stages:
+  load_save_data:
+    cmd: python src/data/make_dataset.py --git s=params.yaml
+    deps:
+    - src/load_data.py
+    - training_data/housing.csv
+    outs:
+    - data/raw/housing.csv
