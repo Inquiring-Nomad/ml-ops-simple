@@ -1,0 +1,44 @@
+schema: '2.0'
+stages:
+  load_save_data:
+    cmd: python src/data/make_dataset.py --config=params.yaml
+    deps:
+    - path: src/data/make_dataset.py
+      md5: 0757bd193ac9f96c9ad7b02ae3185b12
+      size: 1447
+    - path: training_data/housing.csv
+      md5: d1c47305887e2252bf1ccbd74ff159a6
+      size: 1423529
+    outs:
+    - path: data/raw/housing.csv
+      md5: d1c47305887e2252bf1ccbd74ff159a6
+      size: 1423529
+  split_data:
+    cmd: python src/data/split.py --config=params.yaml
+    deps:
+    - path: data/raw/housing.csv
+      md5: d1c47305887e2252bf1ccbd74ff159a6
+      size: 1423529
+    - path: src/data/split.py
+      md5: 8693541efdaa925b7f8e547ec646516b
+      size: 1129
+    outs:
+    - path: data/processed/test_housing.csv
+      md5: b17743d8dd9ae6d52668be0ccef2d51c
+      size: 283842
+    - path: data/processed/train_housing.csv
+      md5: 55f235b479b00622c24072ff580ab951
+      size: 1139823
+  visualise_data:
+    cmd: python src/visualization/data_vis.py --config=params.yaml
+    deps:
+    - path: data/processed/train_housing.csv
+      md5: 55f235b479b00622c24072ff580ab951
+      size: 1139823
+    - path: src/visualization/data_vis.py
+      md5: 6d71c57e07760944bf59604f93f5e771
+      size: 1054
+    outs:
+    - path: reports/figures/eda/profiling.html
+      md5: ffffcb601e4a106288d6622bb206fe82
+      size: 5110579

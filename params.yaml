@@ -1,7 +1,7 @@
 base:
   project: mlops-project
   random_state: 42
-  target_col: TARGET
+  target_col: median_house_value
 
 data_source:
   gd_source: training_data/housing.csv
@@ -9,10 +9,14 @@ data_source:
 load_data:
   raw_dataset_csv: data/raw/housing.csv
 
+vis_data:
+  profiling_path: reports/figures/eda/profiling.html
+
 split_data:
   train_path: data/processed/train_housing.csv
   test_path: data/processed/test_housing.csv
   test_size: 0.2
+  n_splits: 1
 
 estimators:
   ElasticNet:

@@ -1,8 +1,24 @@
 stages:
   load_save_data:
-    cmd: python src/data/make_dataset.py --git s=params.yaml
+    cmd: python src/data/make_dataset.py --config=params.yaml
     deps:
-    - src/load_data.py
+    - src/data/make_dataset.py
     - training_data/housing.csv
     outs:
     - data/raw/housing.csv
+  split_data:
+    cmd: python src/data/split.py --config=params.yaml
+    deps:
+      - src/data/split.py
+      - data/raw/housing.csv
+    outs:
+      - data/processed/train_housing.csv
+      - data/processed/test_housing.csv
+  visualise_data:
+    cmd: python src/visualization/data_vis.py --config=params.yaml
+    deps:
+      - src/visualization/data_vis.py
+      - data/processed/train_housing.csv
+    outs:
+      - reports/figures/eda/profiling.html
+
