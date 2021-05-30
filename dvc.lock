@@ -42,3 +42,66 @@ stages:
     - path: reports/figures/eda/profiling.html
       md5: ffffcb601e4a106288d6622bb206fe82
       size: 5110579
+  feauturise_data:
+    cmd: python src/features/data_feat.py --config=params.yaml
+    deps:
+    - path: data/processed/train_housing.csv
+      md5: 55f235b479b00622c24072ff580ab951
+      size: 1139823
+    - path: src/features/data_feat.py
+      md5: 91e34f8c06cb1e7c0d583173fce171ba
+      size: 2149
+    outs:
+    - path: data/processed/train_housing_pre.npy
+      md5: 82e7d5347cbcd1f6c1f765b97a6f3302
+      size: 1717376
+    - path: models/pipeline
+      md5: 2abf94bd3e9ba63788f04296674e058e
+      size: 2065
+  train:
+    cmd: python src/models/train_model.py --config=params.yaml
+    deps:
+    - path: data/processed/train_housing_pre.npy
+      md5: 82e7d5347cbcd1f6c1f765b97a6f3302
+      size: 1717376
+    - path: src/models/train_model.py
+      md5: 0b7178502b1eb005db7af19758894648
+      size: 2372
+    params:
+      params.yaml:
+        estimators.LinearRegression.cross_val_cv: 5
+        estimators.RandomForestReg.param_grid.max_features:
+        - 2
+        - 4
+        - 5
+        - 8
+        estimators.RandomForestReg.param_grid.n_estimators:
+        - 3
+        - 10
+        - 30
+    outs:
+    - path: models/linear_regression.joblib
+      md5: c55e9a896bba40513a4b9206fdd8d7e5
+      size: 760
+    - path: reports/linreg_cross_val_scores.json
+      md5: a93deb2794b8bb3f84475da62f6a8783
+      size: 33
+  evaluate:
+    cmd: python src/models/eval_model.py --config=params.yaml
+    deps:
+    - path: data/processed/test_housing.csv
+      md5: b17743d8dd9ae6d52668be0ccef2d51c
+      size: 283842
+    - path: models/linear_regression.joblib
+      md5: c55e9a896bba40513a4b9206fdd8d7e5
+      size: 760
+    - path: models/pipeline
+      md5: 2abf94bd3e9ba63788f04296674e058e
+      size: 2065
+    - path: src/models/eval_model.py
+      md5: 92d9601c591d39b130caa4ed3cdb27b5
+      size: 1922
+    outs:
+    - path: reports/linreg_eval_scores.json
+      md5: bced539f8491ed5aacf178e3ad53d9d9
+      size: 90

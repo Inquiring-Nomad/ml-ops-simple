@@ -12,6 +12,11 @@ load_data:
 vis_data:
   profiling_path: reports/figures/eda/profiling.html
 
+prepro_data:
+  prepro_train: data/processed/train_housing_pre.npy
+  prepro_test: data/processed/test_housing_pre.npy
+  pipeline_path: models/pipeline
+
 split_data:
   train_path: data/processed/train_housing.csv
   test_path: data/processed/test_housing.csv
@@ -19,16 +24,26 @@ split_data:
   n_splits: 1
 
 estimators:
-  ElasticNet:
-    params:
-      # alpha: 0.88
-      # l1_ratio: 0.89
-      alpha: 0.9
-      l1_ratio: 0.4
-model_dir: saved_models
+  LinearRegression:
+    cross_val_cv: 5
+  RandomForestReg:
+    param_grid:
+      n_estimators:
+      - 3
+      - 10
+      - 30
+      max_features:
+      - 2
+      - 4
+      - 5
+      - 8
+
+model_dir: models
 
 reports:
-  params: report/params.json
-  scores: report/scores.json
+  params: reports/params.json
+  linreg_cross_val_scores: reports/linreg_cross_val_scores.json
+  linreg_eval_scores: reports/linreg_eval_scores.json
+  test_scores: reports/test_scores.json
 
 webapp_model_dir: prediction_service/model/model.joblib
