@@ -45,6 +45,15 @@ A simple app is created with Streamlit . To run it locally:
 
 **streamlit run app.py**
 
+### EDA
+The exploratory data analysis is done with Pandas Profiling and the graphs are stored as an .html page in 
+
+**reports/figures/eda**
+
+### Models and  metrics reports 
+
+These are stored in **models/** and **reports/**
+
 
 Project Organization (created with a Cookiecutter template)
 ------------
