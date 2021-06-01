@@ -3,7 +3,50 @@ ml-ops
 
 Simple ml-ops project
 
-Project Organization
+This is a simple Regression project to demontsrate the use of some Machine Learning Ops tools.
+
+**DVC**
+
+https://dvc.org/
+
+DVC is built to make ML models shareable and reproducible. It is designed to handle large files, data sets, machine learning models, and metrics as well as code.
+
+**Cookiecutter**
+
+https://cookiecutter.readthedocs.io/en/1.7.2/
+
+A command-line utility that creates projects from cookiecutters (project templates)
+
+**Streamlit**
+
+https://docs.streamlit.io/en/stable/index.html
+
+Streamlit is an open-source Python library that makes it easy to create and share beautiful, custom web apps for machine learning and data science.
+
+
+###Dataset
+
+The California Housing Prices dataset
+
+https://www.kaggle.com/camnugent/california-housing-prices
+
+
+Two simple models were evaluated ( A Linear Regression and a Random Forest). GridSearchCV was used to fine tune the Random Forest
+
+The dataset  is tracked in DVC and is stored in a remote storage.
+
+###Packages
+
+The Conda environment packages are exported in environment.yml
+
+### App
+
+A simple app is created with Streamlit . To run it locally: 
+
+**streamlit run app.py**
+
+
+Project Organization (created with a Cookiecutter template)
 ------------
 
     ├── LICENSE
@@ -54,4 +97,4 @@ Project Organization
 
 --------
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+
