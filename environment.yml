@@ -1,0 +1,11 @@
+name: ml-ops
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - pandas-profiling
+  - streamlit
+prefix: /Users/akis/miniforge3/envs/ml-ops
