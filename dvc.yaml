@@ -42,9 +42,11 @@ stages:
     metrics:
       - reports/linreg_cross_val_scores.json:
           cache: false
+      - reports/rfr_cross_val_scores.json:
+          cache: false
 
     outs:
-#      - models/random_forrest.joblib
+      - models/rfr.joblib
       - models/linear_regression.joblib
   evaluate:
     cmd: python src/models/eval_model.py --config=params.yaml
@@ -55,6 +57,8 @@ stages:
      - models/linear_regression.joblib
     metrics:
       - reports/linreg_eval_scores.json:
+          cache: false
+      - reports/rfr_eval_scores.json:
           cache: false
 
 

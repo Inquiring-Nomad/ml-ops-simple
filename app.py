@@ -11,7 +11,7 @@ import joblib
 
 
 pipeline = pickle.load(open('models/pipeline', 'rb'))
-model_path = os.path.join('models', "linear_regression.joblib")
+model_path = os.path.join('models', "rfr.joblib")
 linear_reg_model =  joblib.load(model_path)
 
 
@@ -53,7 +53,7 @@ def main():
         if submit_button:
             pred = predict_value(long, lat, total_rooms, total_bds, pop, hsh, inc, medi_age,prox)
 
-            st.success(f"Predicted house value {np.asscalar(pred)}")
+            st.success(f"Predicted house value {pred[0]}")
 
 
 

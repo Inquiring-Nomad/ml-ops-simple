@@ -43,7 +43,9 @@ model_dir: models
 reports:
   params: reports/params.json
   linreg_cross_val_scores: reports/linreg_cross_val_scores.json
+  rfr_cross_val_scores: reports/rfr_cross_val_scores.json
   linreg_eval_scores: reports/linreg_eval_scores.json
+  rfr_eval_scores: reports/rfr_eval_scores.json
   test_scores: reports/test_scores.json
 
 webapp_model_dir: prediction_service/model/model.joblib

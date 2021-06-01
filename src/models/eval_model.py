@@ -31,21 +31,40 @@ def eval(config_path):
     X_test = df.drop("median_house_value", axis=1)
     y_test = df["median_house_value"].copy()
     pipeline = pickle.load(open(pipeline_path, 'rb'))
+
+
     model_path = os.path.join(model_dir, "linear_regression.joblib")
     linear_reg_model =  joblib.load(model_path)
     X_test_preprocessed = pipeline.transform(X_test)
     final_predictions = linear_reg_model.predict(X_test_preprocessed)
     (rmse, mae, r2) = eval_metrics(y_test, final_predictions)
-    scores_file = config["reports"]["linreg_eval_scores"]
-
-
-    with open(scores_file, "w") as f:
+    ln_scores_file = config["reports"]["linreg_eval_scores"]
+    with open(ln_scores_file, "w") as f:
         scores = {
             "rmse": rmse,
             "mae": mae,
             "r2": r2
         }
         json.dump(scores, f, indent=4)
+
+    #Random Forrest
+    rfr_model_path = os.path.join(model_dir, "rfr.joblib")
+    rfr_model = joblib.load(rfr_model_path)
+    X_test_preprocessed = pipeline.transform(X_test)
+    final_rfr_predictions = rfr_model.predict(X_test_preprocessed)
+    (rmse, mae, r2) = eval_metrics(y_test, final_rfr_predictions)
+    rfr_scores_file = config["reports"]["rfr_eval_scores"]
+    with open(rfr_scores_file, "w") as f:
+        scores = {
+            "rmse": rmse,
+            "mae": mae,
+            "r2": r2
+        }
+        json.dump(scores, f, indent=4)
+
+
+
+
 
 
 

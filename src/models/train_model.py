@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split,cross_val_score
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 import argparse
 import joblib
@@ -45,13 +46,41 @@ def train(config_path):
     display_scores(lin_rmse_scores)
 
 
+    #####Random Forrest#####
+    param_grid = [
 
-    scores_file = config["reports"]["linreg_cross_val_scores"]
+        {'n_estimators': n_estimators, 'max_features': max_features}
+    ]
+
+    forest_reg = RandomForestRegressor(random_state=random_state)
+    # train across 5 folds, that's a total of (12+6)*5=90 rounds of training
+    grid_search = GridSearchCV(forest_reg, param_grid, cv=cross_val_cv,
+                               scoring='neg_mean_squared_error',
+                               return_train_score=True)
+    grid_search.fit(train_x,train_y)
+
+    rfr_best_score = grid_search.best_score_
+    rfr_best_est = grid_search.best_estimator_
+
+    rfr_rmse_scores = np.sqrt(-rfr_best_score)
 
 
-    with open(scores_file, "w") as f:
+
+
+
+    lin_scores_file = config["reports"]["linreg_cross_val_scores"]
+    rfr_scores_file = config["reports"]["rfr_cross_val_scores"]
+
+
+    with open(lin_scores_file, "w") as f:
         scores = {
             "rmse": lin_rmse_scores.mean(),
+
+        }
+        json.dump(scores, f, indent=4)
+    with open(rfr_scores_file, "w") as f:
+        scores = {
+            "rmse": rfr_rmse_scores,
 
         }
         json.dump(scores, f, indent=4)
@@ -62,9 +91,11 @@ def train(config_path):
 
     os.makedirs(model_dir, exist_ok=True)
     lin_reg.fit(train_x,train_y)
-    model_path = os.path.join(model_dir, "linear_regression.joblib")
+    lin_model_path = os.path.join(model_dir, "linear_regression.joblib")
+    rfr_model_path = os.path.join(model_dir, "rfr.joblib")
 
-    joblib.dump(lin_reg, model_path)
+    joblib.dump(lin_reg, lin_model_path)
+    joblib.dump(rfr_best_est, rfr_model_path)
 
 
 
