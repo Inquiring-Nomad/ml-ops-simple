@@ -8,4 +8,4 @@ dependencies:
   - matplotlib
   - pandas-profiling
   - streamlit
-prefix: /Users/akis/miniforge3/envs/ml-ops
+
