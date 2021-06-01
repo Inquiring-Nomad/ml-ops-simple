@@ -33,6 +33,7 @@ def data_feat(config_path):
     sys.stderr.write(f'The input data frame  size is {df.shape}\n')
 
 
+
     housing_num = df.drop('ocean_proximity', axis=1)
     housing_cat = df[['ocean_proximity']]
 
