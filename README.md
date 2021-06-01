@@ -24,7 +24,7 @@ https://docs.streamlit.io/en/stable/index.html
 Streamlit is an open-source Python library that makes it easy to create and share beautiful, custom web apps for machine learning and data science.
 
 
-###Dataset
+### Dataset 
 
 The California Housing Prices dataset
 
@@ -35,11 +35,11 @@ Two simple models were evaluated ( A Linear Regression and a Random Forest). Gri
 
 The dataset  is tracked in DVC and is stored in a remote storage.
 
-###Packages
+### Packages 
 
 The Conda environment packages are exported in environment.yml
 
-### App
+### App 
 
 A simple app is created with Streamlit . To run it locally: 
 
