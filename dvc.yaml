@@ -1,0 +1,65 @@
+stages:
+  load_save_data:
+    cmd: python src/data/make_dataset.py --config=params.yaml
+    deps:
+    - src/data/make_dataset.py
+    - training_data/housing.csv
+    outs:
+    - data/raw/housing.csv
+  split_data:
+    cmd: python src/data/split.py --config=params.yaml
+    deps:
+      - src/data/split.py
+      - data/raw/housing.csv
+    outs:
+      - data/processed/train_housing.csv
+      - data/processed/test_housing.csv
+  visualise_data:
+    cmd: python src/visualization/data_vis.py --config=params.yaml
+    deps:
+      - src/visualization/data_vis.py
+      - data/processed/train_housing.csv
+    outs:
+      - reports/figures/eda/profiling.html
+  feauturise_data:
+    cmd: python src/features/data_feat.py --config=params.yaml
+    deps:
+      - src/features/data_feat.py
+      - data/processed/train_housing.csv
+    outs:
+      - data/processed/train_housing_pre.npy
+      - models/pipeline
+
+  train:
+    cmd: python src/models/train_model.py --config=params.yaml
+    deps:
+      - data/processed/train_housing_pre.npy
+      - src/models/train_model.py
+    params:
+      - estimators.LinearRegression.cross_val_cv
+      - estimators.RandomForestReg.param_grid.n_estimators
+      - estimators.RandomForestReg.param_grid.max_features
+    metrics:
+      - reports/linreg_cross_val_scores.json:
+          cache: false
+      - reports/rfr_cross_val_scores.json:
+          cache: false
+
+    outs:
+      - models/rfr.joblib
+      - models/linear_regression.joblib
+  evaluate:
+    cmd: python src/models/eval_model.py --config=params.yaml
+    deps:
+     - models/pipeline
+     - data/processed/test_housing.csv
+     - src/models/eval_model.py
+     - models/linear_regression.joblib
+    metrics:
+      - reports/linreg_eval_scores.json:
+          cache: false
+      - reports/rfr_eval_scores.json:
+          cache: false
+
+
+
